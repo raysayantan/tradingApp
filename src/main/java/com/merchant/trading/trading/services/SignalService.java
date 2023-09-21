@@ -19,13 +19,15 @@ public class SignalService implements SignalHandler {
     @Override
     public void handleSignal(int signal) {
         Algo algo = new Algo();
-        //TBD : Implement signal processing
+
         List<String> operationList = config.getSignal().getOrDefault(signal, new ArrayList<>());
         for(String op : operationList) {
             int[] oprnd = new int[2];
             //Special processing for SET_ALGO_PARAM, as it has operands as well
             if(op.contains(SET_ALGO_PARAM)) {
-                oprnd = TradingUtils.extractParam(op);
+                StringBuilder sb = new StringBuilder();
+                oprnd = TradingUtils.extractParam(op, sb);
+                op = sb.toString();
                 if(oprnd.length == 0) continue;
             }
             switch(OperationTypes.valueOf(op)) {
