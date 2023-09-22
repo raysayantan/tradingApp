@@ -1,7 +1,6 @@
 package com.merchant.trading.trading.services;
 
 import com.merchant.trading.trading.configurations.ConfigProperties;
-import com.merchant.trading.trading.thirdparty.SignalHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
