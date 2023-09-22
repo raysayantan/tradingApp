@@ -22,6 +22,9 @@ public class SignalService implements SignalHandler {
         Algo algo = new Algo();
 
         List<String> operationList = config.getSignal().getOrDefault(signal, new ArrayList<>());
+        if(operationList.isEmpty()) {
+            algo.cancelTrades();
+        }
         for(String op : operationList) {
             int[] oprnd = new int[2];
             //Special processing for SET_ALGO_PARAM, as it has operands as well
@@ -61,10 +64,11 @@ public class SignalService implements SignalHandler {
     }
 
     public HttpStatus processSignal(int signal) {
-        if(!config.getSignal().containsKey(signal)) {
+        try {
+            handleSignal(signal);
+            return HttpStatus.OK;
+        } catch(Exception e) {
             return HttpStatus.BAD_REQUEST;
         }
-        handleSignal(signal);
-        return HttpStatus.OK;
     }
 }

@@ -79,7 +79,14 @@ class SignalServiceTest {
 
     @Test
     public void testSignalProcessNotPresent_5() {
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, signalHandler.processSignal(5));
+        signalHandler.processSignal(5);
+        Assertions.assertEquals("cancelTrades\n", outContent.toString());
+
+    }
+
+    @Test
+    public void testSignalProcessBadFormat_6() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, signalHandler.processSignal(6));
 
     }
 }
