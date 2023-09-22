@@ -1,0 +1,49 @@
+swagger: "2.0"
+info:
+  title: Trading Application
+  description: Swagger definition of the Trading Application
+  version: 0.0.1-SNAPSHOT
+host: 127.0.0.1:8080
+basePath: /tradingApi
+
+schemes:
+  - https
+  - http
+
+consumes:
+  - application/json
+
+produces:
+  - application/json
+
+paths:
+  /signal/{signal}:
+    get:
+      summary: Perform a set of actions based on the signal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: signal
+          required: true
+          type: integer
+      responses:
+        200:
+          description: return the response
+          schema:
+            properties:
+              message:
+                type: string
+              status:
+                type: integer
+                example: 200
+        404:
+          description: not found
+        400:
+          description: bad request
+        500:
+          description: internal server error
+        503:
+          description: service not available
