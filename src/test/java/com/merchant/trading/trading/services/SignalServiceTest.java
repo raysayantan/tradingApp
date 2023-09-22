@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.ByteArrayOutputStream;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 class SignalServiceTest {
     @Autowired
-    private SignalHandler signalHandler;
+    private SignalService signalHandler;
     @Autowired
     private ConfigProperties configProperties;
 
@@ -42,7 +43,7 @@ class SignalServiceTest {
     }
 
     @Test
-    public void testExtractParamSuccessSignal_1() {
+    public void testSignalHandleSuccessSignal_1() {
         signalHandler.handleSignal(1);
         Assertions.assertEquals("setUp\n" +
                 "setAlgoParam 1,60\n" +
@@ -51,7 +52,7 @@ class SignalServiceTest {
     }
 
     @Test
-    public void testExtractParamSuccessSignal_2() {
+    public void testSignalHandleSuccessSignal_2() {
         signalHandler.handleSignal(2);
         Assertions.assertEquals("reverse\n" +
                 "setAlgoParam 1,80\n" +
@@ -59,7 +60,7 @@ class SignalServiceTest {
     }
 
     @Test
-    public void testExtractParamSuccessSignal_3() {
+    public void testSignalHandleSuccessSignal_3() {
         signalHandler.handleSignal(3);
         Assertions.assertEquals("setAlgoParam 1,90\n" +
                 "setAlgoParam 2,15\n" +
@@ -67,4 +68,18 @@ class SignalServiceTest {
                 "submitToMarket\n", outContent.toString());
     }
 
+    @Test
+    public void testSignalProcessSuccessSignal_3() {
+        signalHandler.processSignal(3);
+        Assertions.assertEquals("setAlgoParam 1,90\n" +
+                "setAlgoParam 2,15\n" +
+                "performCalc\n" +
+                "submitToMarket\n", outContent.toString());
+    }
+
+    @Test
+    public void testSignalProcessNotPresent_5() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, signalHandler.processSignal(5));
+
+    }
 }

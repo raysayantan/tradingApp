@@ -23,11 +23,12 @@ public class TradingController {
 
     @GetMapping("/signal/{signal}")
     public ResponseEntity<Response> getSignal(@PathVariable int signal) {
-        service.handleSignal(signal);
+        HttpStatus status = service.processSignal(signal);
+        String message = (status == HttpStatus.OK) ? "Success" : "Failed";
         return new ResponseEntity(Response.builder()
-                .status(HttpStatus.OK.value())
-                .message("Success")
+                .status(status.value())
+                .message(message)
                 .build(),
-                HttpStatus.OK);
+                status);
     }
 }

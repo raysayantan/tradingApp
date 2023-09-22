@@ -6,6 +6,7 @@ import com.merchant.trading.trading.thirdparty.Algo;
 import com.merchant.trading.trading.thirdparty.SignalHandler;
 import com.merchant.trading.trading.utils.TradingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -57,5 +58,13 @@ public class SignalService implements SignalHandler {
                     break;
             }
         }
+    }
+
+    public HttpStatus processSignal(int signal) {
+        if(!config.getSignal().containsKey(signal)) {
+            return HttpStatus.BAD_REQUEST;
+        }
+        handleSignal(signal);
+        return HttpStatus.OK;
     }
 }
